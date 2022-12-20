@@ -1,1 +1,10 @@
-[20-Dec-2022 15:33:30 UTC] [error] Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\NotFoundHttpException: "No route found for "GET https://fazriachyar.my.id/public/index.php/"" at /home/fazriach/public_html/vendor/symfony/http-kernel/EventListener/RouterListener.php line 128
+[14-Dec-2022 13:14:54 UTC] PHP Fatal error:  Uncaught Error: Class "Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle" not found in /home/fazriach/public_html/api/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php:135
+Stack trace:
+#0 /home/fazriach/public_html/api/vendor/symfony/http-kernel/Kernel.php(382): App\Kernel->registerBundles()
+#1 /home/fazriach/public_html/api/vendor/symfony/http-kernel/Kernel.php(766): Symfony\Component\HttpKernel\Kernel->initializeBundles()
+#2 /home/fazriach/public_html/api/vendor/symfony/http-kernel/Kernel.php(190): Symfony\Component\HttpKernel\Kernel->preBoot()
+#3 /home/fazriach/public_html/api/vendor/symfony/runtime/Runner/Symfony/HttpKernelRunner.php(35): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#4 /home/fazriach/public_html/api/vendor/autoload_runtime.php(29): Symfony\Component\Runtime\Runner\Symfony\HttpKernelRunner->run()
+#5 /home/fazriach/public_html/api/public/index.php(5): require_once('/home/fazriach/...')
+#6 {main}
+  thrown in /home/fazriach/public_html/api/vendor/symfony/framework-bundle/Kernel/MicroKernelTrait.php on line 135
