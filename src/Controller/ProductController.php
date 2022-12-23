@@ -17,6 +17,39 @@ class ProductController extends AbstractController
     /** @var Generator */
     protected $faker;
 
+    #[Route('/product/add', name: 'add_product', methods: ['POST'])]
+    public function addProduct(ManagerRegistry $doctrine,Request $request): Response
+    {   
+        $data = json_decode($request->getContent(), true);
+        $em = $doctrine->getManager();
+
+        $findProductByCode = $em->getRepository(Product::class)
+            ->findOneBy([
+                'productCode' => $data['productCode'],
+                'action' => ['U','I']
+            ]);
+
+        if($findProductByCode){
+            $message['response']['failed'] = 'Product Code telah tersedia.';
+        } else {
+            $product = new Product();
+            $product->setName($data['name']);
+            $product->setQuantity($data['quantity']);
+            $product->setCategory($data['category']);
+            $product->setBrand($data['brand']);
+            $product->setPrice($data['price']);
+            $product->setProductCode($data['productCode']);
+            $product->setAction('I');
+
+            $em->persist($product);
+            $em->flush();
+            
+            $message['response']['success'] = 'Product berhasil ditambahkan..';
+        }
+
+        return $this->json($message);
+    }
+
     #[Route('/product/view', name: 'view_product', methods: ['GET'])]
     public function viewAction(ManagerRegistry $doctrine): Response
     {
