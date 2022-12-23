@@ -46,6 +46,10 @@ class ProductController extends AbstractController
             ->findBy([
                 "action" => ['I','U']
             ]);
+
+        if(!$viewAllProduct){
+            $viewAllProduct['response']['failed'] = "Product not found";
+        }
         
         return $this->json($viewAllProduct);
     }
@@ -61,7 +65,7 @@ class ProductController extends AbstractController
             ]);
 
         if(!$viewByIdProduct){
-            $viewByIdProduct = ["messages" => "Product not found"];
+            $viewByIdProduct['response']['failed'] = "Product not found";
         }
 
         return $this->json($viewByIdProduct);
@@ -100,8 +104,9 @@ class ProductController extends AbstractController
             ->findOneBy([
                 'id' => $data['id']
             ]);
+
         if(!$product){
-            $product = ["messages" => "Product not found"];
+            $product['response']['failed'] = "Product not found";
         } else {
             $product->setName($data['name']);
             $product->setQuantity($data['quantity']);
@@ -112,8 +117,9 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
         }
-
-        return $this->json(['message' => 'Success Update '.$product->getName().' Data']);
+        
+        $message['response']['success'] = 'Success Update '.$product->getName().' Data';
+        return $this->json($message);
     }
 
     #[Route('/product/delete', name: 'delete_product', methods: ['POST'])]
@@ -126,14 +132,16 @@ class ProductController extends AbstractController
             ->findOneBy([
                 'id' => $data['id']
             ]);
+
         if(!$product){
-            $product = ["messages" => "Product not found"];
+            $product['response']['failed'] = "Product not found";
         }
+
         $product->setAction('D');
-        
         $em->persist($product);
         $em->flush();
 
-        return $this->json(['message' => 'success delete data']);
+        $message['response']['success'] = "success delete data";
+        return $this->json($message);
     }
 }
