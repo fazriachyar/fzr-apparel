@@ -23,29 +23,18 @@ class ProductController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $em = $doctrine->getManager();
 
-        $findProductByCode = $em->getRepository(Product::class)
-            ->findOneBy([
-                'productCode' => $data['productCode'],
-                'action' => ['U','I']
-            ]);
+        $product = new Product();
+        $product->setName($data['name']);
+        $product->setQuantity($data['quantity']);
+        $product->setCategoryId($data['categoryId']);
+        $product->setPrice($data['price']);
+        $product->setAction('I');
+        $product->setAddTime(new \Datetime());
 
-        if($findProductByCode){
-            $message['response']['failed'] = 'Product Code telah tersedia.';
-        } else {
-            $product = new Product();
-            $product->setName($data['name']);
-            $product->setQuantity($data['quantity']);
-            $product->setCategoryId($data['categoryId']);
-            $product->setPrice($data['price']);
-            $product->setAction('I');
-            $product->setAddTime(new \Datetime());
-
-            $em->persist($product);
-            $em->flush();
-            
-            $message['response']['success'] = 'Product berhasil ditambahkan..';
-        }
-
+        $em->persist($product);
+        $em->flush();
+        
+        $message['response']['success'] = 'Product berhasil ditambahkan..';
         return $this->json($message);
     }
 
