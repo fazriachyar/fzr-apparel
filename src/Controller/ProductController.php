@@ -94,7 +94,7 @@ class ProductController extends AbstractController
     public function editAction(ManagerRegistry $doctrine, Request $request): Response
     {
         $em = $doctrine->getManager();
-        $data = json_decode($request->getRequest(), true);
+        $data = json_decode($request->getContent(), true);
 
         $product = $em->getRepository(Product::class)
             ->findOneBy([
