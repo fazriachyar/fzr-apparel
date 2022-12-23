@@ -35,11 +35,10 @@ class ProductController extends AbstractController
             $product = new Product();
             $product->setName($data['name']);
             $product->setQuantity($data['quantity']);
-            $product->setCategory($data['category']);
-            $product->setBrand($data['brand']);
+            $product->setCategoryId($data['categoryId']);
             $product->setPrice($data['price']);
-            $product->setProductCode($data['productCode']);
             $product->setAction('I');
+            $product->setAddTime(new \Datetime());
 
             $em->persist($product);
             $em->flush();
