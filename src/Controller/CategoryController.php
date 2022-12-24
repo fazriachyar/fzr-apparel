@@ -24,7 +24,7 @@ class CategoryController extends AbstractController
                 "action" => ['U','I']
             ]);
 
-        if(!$checkCategory){
+        if($checkCategory){
             $message['response']['failed'] = $data['name'].' Category is available !';
         } else {
             $category = new Category();
