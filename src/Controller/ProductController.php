@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,9 +72,16 @@ class ProductController extends AbstractController
         return $this->json($viewByIdProduct);
     }
 
-    #[Route('/product/faker', name: 'mock_prouct', methods: ['POST'])]
+    #[Route('/product/faker', name: 'mock_prouct', methods: ['POST'], )]
     public function fakeAction(ManagerRegistry $doctrine, Request $request): Response
     {
+        $hasAccess = $this->isGranted('ROLE_ADMIN');
+        if(!$hasAccess){
+            // $this->denyAccessUnlessGranted('ROLE_ADMIN');
+            $message['response']['failed'] = 'Access Denied !';
+            return $this->json($message);
+        }
+
         $em = $doctrine->getManager();
         $data = json_decode($request->getContent(), true);
         $num = $data['qty'];
@@ -91,7 +99,8 @@ class ProductController extends AbstractController
         }
         $em->flush();
 
-        return $this->json(['message' => 'Success Create '.$i.' Mock Data']);
+        $message['response']['success'] = 'Success add '.$i.' mock data';
+        return $this->json($message);
     }
 
     #[Route('/product/edit', name: 'edit_product', methods: ['PUT'])]
